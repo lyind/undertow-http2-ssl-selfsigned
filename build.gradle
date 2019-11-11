@@ -1,0 +1,42 @@
+plugins {
+    id 'application'
+    id 'idea'
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
+
+group 'net.talpidae'
+version '1'
+
+defaultTasks 'jar'
+
+sourceCompatibility = JavaVersion.VERSION_1_10;
+targetCompatibility = JavaVersion.VERSION_1_10;
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+mainClassName = 'net.talpidae.hello.Hello'
+manifest {
+    attributes 'Main-Class': mainClassName
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+    mavenCentral()
+}
+
+// exclude javax.xml.parsers
+task printClasspath {
+    doLast {
+        configurations.testRuntime.each { println it }
+    }
+}
+
+dependencies {
+    annotationProcessor "org.projectlombok:lombok:1.18.2"
+    compileOnly "org.projectlombok:lombok:1.18.2"
+
+    compile 'io.undertow:undertow-websockets-jsr:2.0.20.Final'
+    
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
